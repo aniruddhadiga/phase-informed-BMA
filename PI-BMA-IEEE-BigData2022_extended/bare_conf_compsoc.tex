@@ -512,8 +512,13 @@ and
 \end{align*} }
 
 As an example, suppose we obtain a subset of signals $\{1,2,5\}$ as the leading indicators with lags $\{\tau_1=2, \tau_2=1, \tau_5=1\}$. Since the maximum lag is 2, $\tau=2$. Thus $\tilde P(t) = (P(t-1), P(t-2))$, $\Paux(t) = (P_1(t-1), P_1(t-2), P_2(t-1), P_5(t-1))$. 
-Now, the vector $\mathbf{w}=(w, w_1, w_2, w_5)=[P(t-1), P(t-2), P_1(t-1), P_1(t-2), P_2(t-1), P_5(t-1)]$. 
-
+Now, the vector $\mathbf{w}=(w, w_1, w_2, w_5)=[P(t-1), P(t-2), P_1(t-1), P_1(t-2), P_2(t-1), P_5(t-1)]$. In Figure~\ref{fig:seq_ex}, we illustrate the process of predicting the phase. 
+\begin{figure*}
+    \centering
+    \includegraphics[width=.75\textwidth]{PI-BMA-IEEE-BigData2022_extended/figs/seq_freq_algo.pdf}
+    \caption{An example of phase prediction.}
+    \label{fig:seq_ex}
+\end{figure*}
 \subsection{Transfer Entropy for Various Sources} \label{subsec:dynamic-TE-src}
 The TEs have been computed using the \verb|IDTxL| toolbox~\cite{wollstadt2018idtxl}. 
 Figure~\ref{fig:TE-surge} and Figure~\ref{fig:TE-overall} describe the   distributions of TE (across all states)  during two surge phases and the overall observed time period. We observe from these two figures that the distribution of TE for various sources change over time. In-particular, we observe that \emph{ght} and \emph{dv-cli} are both heavy tailed compare to other sources in the overall observed time period whereas during the Delta wave \emph{hosp} and \emph{dv-cli} have higher TE values and during the Omicron wave, only \emph{ght} has slightly higher TE value compared to other sources while all other sources get similar TE values. With this observation, we conclude that it is essential to re-identify the leading indicators with significant TE with every new set of observed data points. 
