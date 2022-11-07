@@ -419,8 +419,7 @@ It is to be noted that these data streams undergo considerable amount of revisio
 % \label{alg:rec:piece-fit}
 % \end{algorithm}
 
-
-
+\subsubsection{Transfer Entropy for Various Sources} \label{subsec:dynamic-TE-src}
 Several methods exist in literature for measuring information flows. The most popular is the Granger Causality~\cite{granger1969investigating}, a statistical test, which looks at the linear dependence of the target time series on the lagged source time series. However, many of the signals of interest do not exhibit linear dependence with the target time series, which is often the case, then Granger causality test fail to capture the information flow. Under such circumstances, information theoretic approach of transfer entropy (TE)~\cite{schreiber2000measuring,bossomaier2016transfer} is shown to capture the source-target information flows and has been employed in different applications~\cite{marschinski2002analysing,vicente2011transfer}. 
 TE computes the conditional mutual information between a target and lagged version of the source series. For a $k$ order Markov process $Y$  the  Shannon transfer entropy measures the information flow from a process $X$ to process $Y$ and is defined as
 
@@ -433,12 +432,21 @@ TE computes the conditional mutual information between a target and lagged versi
 
 where $y^{(k)}(t) = (y(t), \dots, y(t-k+1))$ and $x^{(l)}(t) = (x(t), \dots, x(t-l+1))$ are the observed sequences of $Y$ and $X$, respectively.
 
-Given $m$ data auxiliary data sources $X_1, \dots, X_m$, we compute the transfer entropy for each pair $(X_i, Y)$. To estimate the joint and conditional densities required in \eqref{def:te}, we consider the recent 42 weeks of data for each bi-variate distribution $(X_i, Y)$. We denote $\Lambda = \{1, \dots, m\}$ to be the index set of $m$ auxiliary data source. Note that the set of indicators can change over time and we denote let $\Lambda(t) \subseteq \Lambda$ be the set of leading indicators at time $t$ with non-zero TE values. In Figure~\ref{Indicators:surge} and Figure~\ref{Indicators:overall}, we observe that the number of leading indicators vary over the observed time period.
+Given $m$ data auxiliary data sources $X_1, \dots, X_m$, we compute the transfer entropy for each pair $(X_i, Y)$. To estimate the joint and conditional densities required in \eqref{def:te}, we consider the recent 42 weeks of data for each bi-variate distribution $(X_i, Y)$. We denote $\Lambda = \{1, \dots, m\}$ to be the index set of $m$ auxiliary data source. Note that the set of indicators can change over time and we denote let $\Lambda(t) \subseteq \Lambda$ be the set of leading indicators at time $t$ with non-zero TE values. 
 % i.e. $i\in \Lambda(t)$, if and only if  $\mathsf{TE}_{X_i\to Y}$ is significant with a lag $\tau_i$.Since the set of important or leading indicators might change over time, the first step is to prune $\Lambda$ and only consider a subset of $\Lambda$ that is most informative as of time $t$. 
 
 
+In this work, TEs have been computed using the \verb|IDTxL| toolbox~\cite{wollstadt2018idtxl}. In the heatmap (cf. Figure~\ref{fig:averall_heatmap}) and the mosaic plots in~\ref{Indicators:surge} and Figure~\ref{Indicators:overall}, we observe that the number of leading indicators vary over the observed time period.
+Figure~\ref{fig:TE-surge} and Figure~\ref{fig:TE-overall} describe the   distributions of TE (across all states)  during two surge phases and the overall observed time period. We observe from these two figures that the distribution of TE for various sources change over time. In-particular, we observe that \emph{GHT} and \emph{DV-CLI} are both heavy tailed compared to other sources in the overall observed time period whereas during the Delta wave \emph{hosp} and \emph{DV-CLI} have higher TE values and during the Omicron wave, only \emph{GHT} has slightly higher TE values compared to other sources while all other sources get similar TE values. With this observation, we note that it is essential to re-identify the leading indicators (with significant TE) with every new set of observed data points. 
 % \subsection{Phase prediction Using Auxiliary Data sources}
-
+\begin{figure*}[!t]
+    \centering
+    % \subfloat[]
+    \includegraphics[width=0.99\textwidth]{figs/cases_htmap_te_srcs_len_each_week.pdf}
+     \label{fig:TE-surge}
+     \caption{Temporal evolution of sources. Heatmap shows the total number of states for which an individual signal was identified as a sources ( signal with significant TE values) for each week. DV-CLI is a source for a significant number of states for a majority of the forecasting weeks.}
+     \label{fig:averall_heatmap}
+\end{figure*}
 
 \begin{figure*}[!t]
     \centering
@@ -449,24 +457,29 @@ Given $m$ data auxiliary data sources $X_1, \dots, X_m$, we compute the transfer
      \label{Indicators:overall}}
      \caption{Mosaic plot of the leading indicators for selected states during: ~\ref{Indicators:surge} Delta wave (15 July 2021 to 15 August 2021) and  Omicron wave (15 December 2021 to 15 January 2022) and ~\ref{Indicators:overall} overall observed time period i.e. from May 2021 to July 2022. Here the width of a bar denotes the frequency for the overall trends for a state and height of each rectangle within each bar represents the frequency proportion of a specific source.}
  \end{figure*}
- \begin{figure*}[!t]
+ 
+%     %  \hfil
+\begin{figure*}[!t]
     \centering
-    \subfloat[Temporal evolution of sources. Heatmap shows the total number of states for which an individual signal was identified as a sources ( signal with significant TE values) for each week. DV-CLI is a source for a significant number of states for a majority of  the forecasting weeks.]{\includegraphics[width=0.99\textwidth]{figs/cases_htmap_te_srcs_len_each_week.pdf}
+    \subfloat[TE distribution observed during Surge phase]{\includegraphics[width=0.99\textwidth]{figs/plot_TE_surge.png}
      \label{fig:TE-surge}}
      \hfil
+     \subfloat[Overall observed TE distribution ]{\includegraphics[width=0.99\textwidth]{figs/plot_TE_overall.png}
+    \label{fig:TE-overall}}
+     \caption{Histogram of the observed transfer entropy (TE) across all states during ~\ref{fig:TE-surge} the Delta and Omicron wave, and ~\ref{fig:TE-overall} overall observed time period.  }
+ \end{figure*}
 
-
-% \begin{figure*}[ht!]
-%     \centering
-%     \includegraphics[width=0.8\textwidth]{figs/cases_st_htmap_te_srcs_len_all (1).pdf}
-%     \caption{Data sources for various states across forecast weeks with significant transfer entropy with cases.}
-%     \label{TE-src}
-\end{figure*}
+% % \begin{figure*}[ht!]
+% %     \centering
+% %     \includegraphics[width=0.8\textwidth]{figs/cases_st_htmap_te_srcs_len_all (1).pdf}
+% %     \caption{Data sources for various states across forecast weeks with significant transfer entropy with cases.}
+% %     \label{TE-src}
+% \end{figure*}
 
 \subsubsection{Phase inference and Prediction} \label{phase:classification}
-Once the indicators are obtained, we segment the cases and the indicator time series into different phases. Despite heterogeneity in the COVID-19 time series, we  broadly observe three phases and classify the observed time period based on the rate of change of reported cases: Surge (period of steep growth in cases), Decline, and Plateau. We would like to note that the definitions of phases are subjective (several exist\footnote{https://www.cdc.gov/flu/pandemic-resources/planning-preparedness/global-planning-508.html}) and can be user annotated or obtained through standard time-series change point detection algorithms~\cite{aminikhanghahi2017survey}. The main purpose of phase classification is to capture distinct trends in the time series and leverage that information to better train the BMA model. 
+Once the indicators are obtained, we segment the cases and the indicator time series into different phases. Despite heterogeneity in the COVID-19 time series, we  broadly observe three phases and classify the observed time period based on the rate of change of reported cases: Surge (period of steep growth in cases), Decline, and Plateau. The primary purpose of phase classification is to capture distinct trends in the time series and leverage that information to better train the BMA model. We want to note that the definitions of phases are subjective (several exist\footnote{https://www.cdc.gov/flu/pandemic-resources/planning-preparedness/global-planning-508.html}) and can be user annotated or obtained through standard time-series change point detection algorithms~\cite{aminikhanghahi2017survey}.  
 
-We first approximate the nonlinear time series with a piece-wise linear function. We use a standard R package \verb|segmented| \cite{Rsegmented} to estimate multiple break-points. Note that, in real-time forecasting, since we obtain a new data point each week, the phase segments have to be re-estimated each week. Given the new data point, we would want to refine our estimates of phases but also ensure that they do not change significantly. Hence, each week, we apply the segmentation only on data starting from the recent two break points. The algorithm is described in Algorithm~\ref{alg:rec:piece-fit}.
+We first approximate the nonlinear time series with a piece-wise linear function. We use a standard R package \verb|segmented| \cite{Rsegmented} to estimate multiple break-points. Note that, in real-time forecasting, since we obtain a new data point each week, the phase segments have to be re-estimated each week. Given the new data point, we would want to refine our estimates of phases. In order to ensure that all of the historical phase estimates do not change, we apply the segmentation each week on data starting from the most recent two break points. The algorithm is described in Algorithm~\ref{alg:rec:piece-fit}.
 
 \begin{algorithm}[ht!]
 \footnotesize
@@ -497,7 +510,7 @@ with break points $1 \leq b_1^{(t)}\leq b_2^{(t)}\leq  \dots\leq  b_{k_t}^{(t)}$
 Using the estimated break points $\{b_1, \dots, b_m\}$ with Algorithm~\ref{alg:rec:piece-fit} for the ground truth $y_1, \dots, y_t$, we classify the time interval between any two consecutive break-points as a Surge (S), Decline (D), or Plateau (P) phase. We employ a simple criterion for the phase classification, which defines a time interval $(b_k, b_{k+1}]$ as surge  (or decline) phase if there is at least a $10\%$ increment (or at least a $10\%$ reduction) in the case count from the start of the time interval $b_k$ to end of the interval $b_{k+1}$ and plateau phase otherwise.
 Let $P(t)$ and $P_1(t),\dots, P_m(t)$, be the phase time series for the piece-wise constant versions (as defined in Algorithm~\ref{alg:rec:piece-fit}) of $Y(t)$ and $X_1(t), \dots, X_m(t)$ respectively. The algorithm to obtain the phase time series for a given time series is described in Algorithm~\ref{alg:phase}. 
 
-Let $ P^{(k)}(t) = (P(t), \dots, P(t-k+1))$ and $P^{(k)}_i(t) =\left(P_i(t), \dots, P_i(t-k+1)\right)$,  then we assume that $P(t)$ is a Markov process that depends only on   $\Paux(t-1) = \{\tilde P_i(t-1); i\in \Lambda(t)\}$ and $ P^{(\tau)}(t-1)$, where $\tau =\max_i \tau_i$. That is, the phase at time $t$ for the case count time series i.e. $P(t)$ can be written as a function of past $\tau$ values of itself and past $\tau_i$ phases of the $X_i$ when $i$ is restricted to the leading indicators set $\Lambda(t)$. Thus we have 
+Let $ P^{(k)}(t) = (P(t), \dots, P(t-k+1))$ and $P^{(k)}_i(t) =\left(P_i(t), \dots, P_i(t-k+1)\right)$,  then we assume that $P(t)$ is a Markov process that depends only on   $\Paux(t-1) = \{\tilde P_i(t-1); i\in \Lambda(t)\}$ and $ P^{(\tau)}(t-1)$, where $\tau =\max_i \tau_i$. That is, the phase at time $t$ for the case count time series $P(t)$ can be written as a function of past $\tau$ values of itself and past $\tau_i$ phases of the $X_i$ when $i$ is restricted to the leading indicators set $\Lambda(t)$. Thus we have 
 \begin{equation}
     P(t) = f\big( P^{(\tau)}(t-1), \Paux(t-1) \big),
 \end{equation}
@@ -531,21 +544,20 @@ Now, the vector $\mathbf{w}=(w, w_1, w_2, w_5)=[P(t-1), P(t-2), P_1(t-1), P_1(t-
     \caption{An example of phase prediction.}
     \label{fig:seq_ex}
 \end{figure*}
-\subsection{Transfer Entropy for Various Sources} \label{subsec:dynamic-TE-src}
-The TEs have been computed using the \verb|IDTxL| toolbox~\cite{wollstadt2018idtxl}. 
-Figure~\ref{fig:TE-surge} and Figure~\ref{fig:TE-overall} describe the   distributions of TE (across all states)  during two surge phases and the overall observed time period. We observe from these two figures that the distribution of TE for various sources change over time. In-particular, we observe that \emph{ght} and \emph{dv-cli} are both heavy tailed compare to other sources in the overall observed time period whereas during the Delta wave \emph{hosp} and \emph{dv-cli} have higher TE values and during the Omicron wave, only \emph{ght} has slightly higher TE value compared to other sources while all other sources get similar TE values. With this observation, we conclude that it is essential to re-identify the leading indicators with significant TE with every new set of observed data points. 
 
-% \begin{figure*}[!t]
+
+
+
+
+
+
+
+% \begin{figure*}[ht!]
 %     \centering
-%     \subfloat[TE distribution observed during Surge phase]{\includegraphics[width=0.99\textwidth]{figs/plot_TE_surge.png}
-%      \label{fig:TE-surge}}
-%      \hfil
-%      \subfloat[Overall observed TE distribution ]{\includegraphics[width=0.99\textwidth]{figs/plot_TE_overall.png}
-%     \label{fig:TE-overall}}
-%      \caption{Histogram of the observed transfer entropy (TE) across all states during ~\ref{fig:TE-surge} the Delta and Omicron wave, and ~\ref{fig:TE-overall} overall observed time period.  }
-%  \end{figure*}
-
-
+%     \includegraphics[width=0.8\textwidth]{figs/cases_st_htmap_te_srcs_len_all (1).pdf}
+%     \caption{Data sources for various states across forecast weeks with significant transfer entropy with cases.}
+%     \label{TE-src}
+% \end{figure*}
 
 
 \begin{algorithm}[!t]
@@ -598,8 +610,9 @@ Observed source time series $x_i(t)$, for each $i\in\Lambda$.\\
 \end{algorithmic}
 \end{algorithm}
 
+
 \section{Results}
-\begin{figure*}[ht!]
+\begin{figure}[ht!]
     \centering
     % \begin{subfigure}{.4\textwidth}
     % %\includegraphics[width=.45\linewidth]{figs/overall_perf_BMA_v3.pdf}
@@ -607,7 +620,7 @@ Observed source time series $x_i(t)$, for each $i\in\Lambda$.\\
     % \caption{1 week ahead}
     % \label{fig:1wk_ranking}
     % \end{subfigure}
-    \begin{subfigure}{.47\textwidth}
+    \begin{subfigure}{.5\textwidth}
     %\includegraphics[width=.45\linewidth]{figs/overall_perf_BMA_v3.pdf}
     \includegraphics[width=.99\textwidth]{figs/pred_PI_BMA_2_wk_median_rank_various_weeks_seq_v2.pdf}
     \caption{2 week ahead}
@@ -619,7 +632,7 @@ Observed source time series $x_i(t)$, for each $i\in\Lambda$.\\
     % \caption{3 week ahead}
     % \label{fig:3wk_ranking}
     % \end{subfigure}
-    \begin{subfigure}{.47\textwidth}
+    \begin{subfigure}{.5\textwidth}
       %\includegraphics[width=.45\linewidth]
               %{figs/median_bma_methods_1_week_ahead.pdf}
       \includegraphics[width=.99\textwidth]{figs/pred_PI_BMA_4_wk_median_rank_various_weeks_seq_v2.pdf}
@@ -629,49 +642,17 @@ Observed source time series $x_i(t)$, for each $i\in\Lambda$.\\
     \end{subfigure}
         \caption{A comparison of several \hub{} models performance. The median ranking of models for 2 and 4 week ahead forecasts in (a) and (d) computed across different regimes, respectively. Blue bars shows the median ranking of models computed across all the forecasting weeks, orange bars correspond to the median ranking of models computed for the Delta wave's surge phase, and green bars correspond to the median ranking of models during the Omicron wave's surge phase. \textbf{The rankings across different phases indicate that the PI-BMA (red box) is able to provide significantly better forecasts that our UVA-Ensemble model, especially 4 weeks ahead, for critical surge phases corresponding to the \emph{Delta wave} (\textbf{median ranking of 2}) and the \emph{Omicron wave} (\textbf{median ranking of 2})}.  }
 \label{fig:match_frac}
-\end{figure*}
-
-\begin{figure}[ht!]
-    \centering
-    % \begin{subfigure}{.4\textwidth}
-    % %\includegraphics[width=.45\linewidth]{figs/overall_perf_BMA_v3.pdf}
-    % \includegraphics[width=.99\textwidth]{figs/pred_PI_BMA_1_wk_median_rank_various_weeks_seq.pdf}
-    % \caption{1 week ahead}
-    % \label{fig:1wk_ranking}
-    % \end{subfigure}
-    \begin{subfigure}{.47\textwidth}
-    %\includegraphics[width=.45\linewidth]{figs/overall_perf_BMA_v3.pdf}
-    \includegraphics[width=.99\textwidth]{figs/boxplot_2_wk_median_fct_weeks_seq_v2.pdf}
-    \caption{2 week ahead}
-    \label{fig:2wk_ranking}
-    \end{subfigure}
-    % \begin{subfigure}{.4\textwidth}
-    % %\includegraphics[width=.45\linewidth]{figs/overall_perf_BMA_v3.pdf}
-    % \includegraphics[width=.99\textwidth]{figs/pred_PI_BMA_3_wk_median_rank_various_weeks_seq.pdf}
-    % \caption{3 week ahead}
-    % \label{fig:3wk_ranking}
-    % \end{subfigure}
-    \begin{subfigure}{.47\textwidth}
-      %\includegraphics[width=.45\linewidth]
-              %{figs/median_bma_methods_1_week_ahead.pdf}
-      \includegraphics[width=.99\textwidth]{PI-BMA-IEEE-BigData2022_extended/figs/boxplot_4_wk_median_fct_weeks_seq_v2.pdf}
-      \caption{4 week ahead}
-      \label{fig:4wk_ranking}
-     
-    \end{subfigure}
-        \caption{A comparison variation in median WIS scores across counties for several \hub{} models performance.}
-\label{fig:match_frac}
 \end{figure}
 In all our analysis, we consider aggregate performance across three regimes, ($i$) Overall$-$80 forecasts weeks (1 August, 2020 $-$ 1 January, 2022), ($ii$) Delta wave surge region (15 July 2021 $-$ 15 August 2021), and ($iii$) Omicron wave (15 December, 2021 $-$ 15 January 2022). The latter two regimes are specifically considered as these correspond to the surge phases where most models failed to forecast the rapid increase in cases \cite{ray2021challenges}.
 \subsection{Retrospective Evaluation: A Comparison with \hub{} Models}\label{sec:comp_hub}
-Since early 2020, over 100 models from dozens of teams have submitted forecasts to \hub{} with the numbers varying each week. The model details are available in \cite{COVID-Hub}. Among the several teams, only a handful have provided forecasts consistently, especially at the county-level. As a fair comparison, we only consider teams that have been providing consistent forecasts across most counties and targets since August 2020. It should be noted that across the 80 forecasting weeks, 15 models have provided significant number of forecasts. As the pandemic progressed, we do observe that the number of models start to drop after July 2021. The teams provide probabilistic forecasts in the quantile format. In order to compare the forecast quantiles of the different models, we use the Weighted Interval Score (WIS), the \emph{de facto} standard in epidemiological forecasting community for probabilistic forecast evaluation \cite{bracher2020evaluating}:
+Since early 2020, over 100 models from dozens of teams have submitted forecasts to \hub{}, with the numbers varying each week. The model details are available in \cite{COVID-Hub}. Among the several teams, only a handful have provided forecasts consistently, especially at the county level. As a fair comparison, we only consider teams that have been providing consistent forecasts across most counties and targets since August 2020. It should be noted that across the 80 forecasting weeks, 15 models have provided a significant number of forecasts. As the pandemic progressed, we observed that the number of models started to drop after July 2021. The teams provide probabilistic forecasts in the quantile format. To compare the forecast quantiles of the different models, we use the Weighted Interval Score (WIS), the \emph{de facto} standard in the epidemiological forecasting community for probabilistic forecast evaluation \cite{bracher2020evaluating}:
 \begin{align}
     WIS_{\alpha_{0:k}} (F,y) = \frac{1}{K+0.5} \sum_{k=0}^{K} \frac{\alpha_k}{2} (u_k-l_k) + \nonumber\\ \frac{2}{\alpha_k} (l_k-y) \mathbbm{1}(y<l_k) + \frac{2}{\alpha_k} (y-u_k) \mathbbm{1}(y>u_k)
     \label{eq:wis}
 \end{align}
 where $y$ is the observed value (ground truth case count corresponding to a week) for a given location and date, $F$ is the forecast defined in terms of the median $m$, upper quantiles $u_k$ and lower quantiles $l_k$ of the predictive distribution, respectively. $K=3$ is the number of intervals considered. 
 
-The model performances are first ranked for each forecast week and target horizon by considering its median WIS score across all the counties (model having the lowest median score is ranked one). We next determine the median ranking of different models during different regimes and the results are shown in Figures~\ref{fig:2wk_ranking} and~\ref{fig:4wk_ranking} for 2 week ahead and 4 week ahead forecast horizons, respectively. The blue  bars, which corresponds to the median ranking computed across all forecasting weeks, indicate that both BMA (UVA-Ensemble) and PI-BMA are ranked around 6$-$7. \textbf{Focusing on the harder target of 4-weeks ahead, we observe that the PI-BMA is one the top ranked models during the critical phases of Delta wave surge (median ranking of 2 out of 9) and Omicron wave surge (median ranking of 2 out of 6). The PI-BMA's performance indicates that the model is able to effectively incorporate the phase information and provide considerably better forecasts during important phases when compared to both BMA (UVA-Ensemble) and the rest of the forecast hub models. It should be noted that, the \emph{COVIDhub ensemble} and \emph{COVIDhub-trained\_ensemble} use forecasts from highly tuned individual models but our model is able to out perform them during the critical phases. This validates the use of selective sampling of training data by ensembling methods}. 
+The model performances are first ranked for each forecast week and target horizon by considering its median WIS score across all the counties (model having the lowest median score is ranked one). We next determine the median ranking of different models during different regimes, and the results are shown in Figures~\ref{fig:2wk_ranking} and~\ref{fig:4wk_ranking} for 2 weeks ahead and 4 weeks ahead forecast horizons, respectively. The blue bars, which corresponds to the median ranking computed across all forecasting weeks, indicate that both BMA (UVA-Ensemble) and PI-BMA are ranked around 6$-$7. \textbf{Focusing on the more challenging target of 4-weeks ahead (since the uncertainty is higher), we observe that the PI-BMA is one the top-ranked models during the critical phases of Delta wave surge (median ranking of 2 out of 9) and Omicron wave surge (median ranking of 2 out of 6). The PI-BMA's performance indicates that the model is able to effectively incorporate the phase information and provide considerably better forecasts during critical phases when compared to both BMA (UVA-Ensemble) and the rest of the forecast hub models. It should be noted that, the \emph{COVIDhub ensemble} and \emph{COVIDhub-trained\_ensemble} use forecasts from highly tuned individual models but our model is able to out perform them during the critical phases. This validates the use of selective sampling of training data by ensembling methods}. 
 % An example of a floating figure using the graphicx package.
 % Note that \label must occur AFTER (or within) \caption.
 % For figures, \caption should occur after the \includegraphics.
@@ -767,12 +748,13 @@ The model performances are first ranked for each forecast week and target horizo
 % \fnbelowfloat command of the stfloats package.
 
 
-
-
 \section{Conclusion}
-This paper, based on the observations made during the COVID-19 forecasting efforts, proposed a novel phase-based Bayesian model averaging, a modification of the current model. The paper provides three critical contributions, $(i)$ a phase-based sampling approach for training the ensemble, $(ii)$ a novel transfer-entropy-based leading indicator identification method, and $(iii)$ a phase prediction method that uses the phases from the leading indicators to make prediction for the future phase. The performance of the PI-BMA model validates the utility if the  phase-based training methodology. The proposed method is fairly generic and can be incorporated in most ensemble model.
+Based on the observations made during the COVID-19 forecasting efforts, this paper proposed a novel phase-based Bayesian model averaging, a modification of the current model. The paper provides three critical contributions, $(i)$ a phase-based sampling approach for training the ensemble, $(ii)$ a novel transfer-entropy-based leading indicator identification method, and $(iii)$ a phase prediction method that uses the phases from the leading indicators to predict the future phase. The performance of the PI-BMA model validates the utility of the  phase-based training methodology. The proposed method is fairly generic and can be incorporated in most ensemble model.
 
-In future work, we plan on exploring other variants of transfer entropy. In addition, several of the auxiliary data sources undergo revision and developing a model to correct for it might improve phase forecasting.   
+In future work, we plan on exploring other variants of transfer entropy. In addition, several of the auxiliary data sources undergo revision and developing a model to correct for it might improve phase forecasting. An extended version of the manuscript containing additional analysis and results are available at \url{https://github.com/aniruddhadiga/phase-informed-BMA}. 
+
+\section{Acknowlegments}
+Funding agencies: NSF Rapid 2142997, CSTE/CDC 5 NU38OT000297, NIH Grant 1R01GM109718, NSF BIG DATA Grant IIS-1633028, NSF Grant No.: OAC-1916805, NSF Expeditions in Computing Grant CCF-1918656, CCF-1917819, NSF RAPID CNS-2028004, NSF RAPID OAC-2027541, US-CDC 75D30119C05935, a grant from Google, UVA Strategic Investment Fund award number SIF160, DTRA under Contract No. HDTRA1-19-D-0007, and VDH Grant VDH-21-501-0141
 
 
 
