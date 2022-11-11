@@ -235,15 +235,16 @@ Email: aniruddha@virginia.edu, marathe@virginia.edu}}
 
 % use for special paper notices
 %\IEEEspecialpapernotice{(Invited Paper)}
-
+\IEEEoverridecommandlockouts
+\IEEEpubid{\makebox[\columnwidth]{978-1-6654-8045-1/22/\$31.00~\copyright2022 IEEE \hfill} \hspace{\columnsep}\makebox[\columnwidth]{ }}
 
 
 
 % make the title area
-\maketitle
-\begingroup\renewcommand\thefootnote{\textsection}
+\maketitle\begingroup\renewcommand\thefootnote{\textsection}
 \footnotetext{Equal contribution}
 \endgroup
+\IEEEpubidadjcol
 
 % As a general rule, do not put math, special symbols or citations
 % in the abstract
@@ -276,7 +277,7 @@ Real-time forecasting of non-stationary time series is a challenging problem,  e
 % creates the second title. It will be ignored for other modes.
 \IEEEpeerreviewmaketitle
 \section{Introduction}
-An\blfootnote{An extended version of the paper containing additional analysis and results is available at \url{https://github.com/aniruddhadiga/phase-informed-BMA}} ensemble of models has been studied extensively and have shown to produce superior performance when compared to individual models~\cite{sagi2018ensemble}. In forecasting, ensemble models, specifically, Bayesian model averaging (BMA)~\cite{raftery2005using}, which are suitable for ensembling probabilistic forecasts, have been shown to produce superior performance over individual models in varied applications such as  epidemiology~\cite{yamana2016superensemble,reich2019collaborative,cramer2022evaluation}, weather predictions~\cite{raftery2005using}, hydrology~\cite{duan2007multi}, political sciences~\cite{montgomery2012improving}, etc. Given, its wide-spread use in probabilistic forecasting, we developed a multi-class BMA ensemble model for COVID-19 case forecasting~\cite{allmodels} to provide weekly forecasts to the CDC's COVID-19 ForecastHub (also referred to as \hub{})~\cite{Cramer2021-hub-dataset}. We have been one of
+An ensemble of models has been studied extensively and have shown to produce superior performance when compared to individual models~\cite{sagi2018ensemble}. In forecasting, ensemble models, specifically, Bayesian model averaging (BMA)~\cite{raftery2005using}, which are suitable for ensembling probabilistic forecasts, have been shown to produce superior performance over individual models in varied applications such as  epidemiology~\cite{yamana2016superensemble,reich2019collaborative,cramer2022evaluation}, weather predictions~\cite{raftery2005using}, hydrology~\cite{duan2007multi}, political sciences~\cite{montgomery2012improving}, etc. Given, its wide-spread use in probabilistic forecasting, we developed a multi-class BMA ensemble model for COVID-19 case forecasting~\cite{allmodels} to provide weekly forecasts to the CDC's COVID-19 ForecastHub (also referred to as \hub{})~\cite{Cramer2021-hub-dataset}. We have been one of
 the teams contributing forecasts (listed as \textsc{UVA-Ensemble}) since July 2020 and have focused on incident cases and hospitalizations at a gran-
 ular level. The constituent models in the \textsc{UVA-Ensemble} forecasting method include several standard statistical, deep learning and compartmental models. Specifically, we employ autoregressive models and their variants (AR with exogenous spatial regressor, ARIMA), an LSTM model, an ensemble Kalman filter (EnKF), and a compartmental model (SEIR). A detailed description of the models is available in our work~\cite{allmodels}. We retrain the models every week to account for nonstationarity of the case time series.  
 
@@ -290,7 +291,7 @@ ular level. The constituent models in the \textsc{UVA-Ensemble} forecasting meth
     
 \end{itemize}
 
-These observations have prompted us to modify the ensemble model training to incorporate the phase information and propose a phase-informed BMA model. These new methods employ big data analytics and machine learning techniques such as transfer entropy~\cite{schreiber2000measuring} to improve forecasting performance. The contribution of this paper is threefold and is summarized as follows\footnote{A more detailed description of the work, additional analysis, and results are provided in the extended version of the paper available at \url{https://github.com/aniruddhadiga/phase-informed-BMA}}:
+These observations have prompted us to modify the ensemble model training to incorporate the phase information and propose a phase-informed BMA model. These new methods employ big data analytics and machine learning techniques such as transfer entropy~\cite{schreiber2000measuring} to improve forecasting performance. The contribution of this paper is threefold and is summarized as follows:
 \subsection{Summary of contributions.}
 \noindent
 \textbf{Development of a new phase-informed BMA.}
@@ -442,7 +443,7 @@ Figure~\ref{fig:TE-surge} and Figure~\ref{fig:TE-overall} describe the   distrib
     % \subfloat[]
     \includegraphics[width=0.99\textwidth]{figs/cases_htmap_te_srcs_len_each_week.pdf}
      \label{fig:TE-surge}
-     \caption{Temporal evolution of sources. Heatmap shows the total number of states for which an individual signal was identified as a sources ( signal with significant TE values) for each week. DV-CLI is a source for a significant number of states for a majority of the forecasting weeks.}
+     \caption{Temporal evolution of sources. Heatmap shows the total number of states for which an individual signal was identified as a sources (signal with significant TE values) for each week. DV-CLI is a source for a significant number of states for a majority of the forecasting weeks.}
      \label{fig:averall_heatmap}
 \end{figure*}
 
@@ -749,7 +750,8 @@ The model performances are first ranked for each forecast week and target horizo
 \section{Conclusion}
 Based on the observations made during the COVID-19 forecasting efforts, this paper proposed a novel phase-based Bayesian model averaging, a modification of the current model. The paper provides three critical contributions, $(i)$ a phase-based sampling approach for training the ensemble, $(ii)$ a novel transfer-entropy-based leading indicator identification method, and $(iii)$ a phase prediction method that uses the phases from the leading indicators to predict the future phase. The performance of the PI-BMA model validates the utility of the  phase-based training methodology. The proposed method is fairly generic and can be incorporated in most ensemble model.
 
-In future work, we plan on exploring other variants of transfer entropy. In addition, several of the auxiliary data sources undergo revision and developing a model to correct for it might improve phase forecasting. An extended version of the manuscript containing additional analysis and results are available at \url{https://github.com/aniruddhadiga/phase-informed-BMA}. 
+In future work, we plan on exploring other variants of transfer entropy. In addition, several of the auxiliary data sources undergo revision and developing a model to correct for it might improve phase forecasting. 
+% An extended version of the manuscript containing additional analysis and results are available at \url{https://github.com/aniruddhadiga/phase-informed-BMA}. 
 
 \section{Acknowlegments}
 Funding agencies: NSF Rapid 2142997, CSTE/CDC 5 NU38OT000297, NIH Grant 1R01GM109718, NSF BIG DATA Grant IIS-1633028, NSF Grant No.: OAC-1916805, NSF Expeditions in Computing Grant CCF-1918656, CCF-1917819, NSF RAPID CNS-2028004, NSF RAPID OAC-2027541, US-CDC 75D30119C05935, a grant from Google, UVA Strategic Investment Fund award number SIF160, DTRA under Contract No. HDTRA1-19-D-0007, and VDH Grant VDH-21-501-0141
